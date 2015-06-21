@@ -1,11 +1,8 @@
-// config/auth.js
-
-// expose our config directly to our application using module.exports
 module.exports = {
 
     'facebookAuth' : {
-        'clientID'        : 'your-secret-clientID-here', // your App ID
-        'clientSecret'    : 'your-client-secret-here', // your App Secret
+        'clientID'        : '1549219225356626', // your App ID
+        'clientSecret'    : '240a737f1f6341bee67484f3810ccaaf', // your App Secret
         'callbackURL'     : 'http://localhost:8080/auth/facebook/callback'
     },
 
@@ -16,9 +13,8 @@ module.exports = {
     },
 
     'googleAuth' : {
-        'clientID'         : 'your-secret-clientID-here',
-        'clientSecret'     : 'your-client-secret-here',
+        'clientID'         : '458336994041-6scpada7h33otqo05p777m4asgbiaerb.apps.googleusercontent.com',
+        'clientSecret'     : 'tvz-oBvnuweiZRHWo0evR1-v',
         'callbackURL'      : 'http://localhost:8080/auth/google/callback'
     }
-
 };
