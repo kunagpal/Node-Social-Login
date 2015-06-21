@@ -1,5 +1,5 @@
 var passport = require('passport');
-var configAuth = require('./auth'); // use this one for testing
+var auth = require('./auth'); // use this one for testing
 var User = require('../app/models/user');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy  = require('passport-twitter').Strategy;
@@ -26,9 +26,9 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
     // FACEBOOK ================================================================
     // =========================================================================
     passport.use(new FacebookStrategy({
-        clientID        : configAuth.facebookAuth.clientID,
-        clientSecret    : configAuth.facebookAuth.clientSecret,
-        callbackURL     : configAuth.facebookAuth.callbackURL,
+        clientID        : auth.facebook.id,
+        clientSecret    : auth.facebook.key,
+        callbackURL     : auth.facebook.callback,
         passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, token, refreshToken, profile, done) {
@@ -101,9 +101,9 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
     // =========================================================================
     passport.use(new TwitterStrategy({
 
-        consumerKey     : configAuth.twitterAuth.consumerKey,
-        consumerSecret  : configAuth.twitterAuth.consumerSecret,
-        callbackURL     : configAuth.twitterAuth.callbackURL,
+        consumerKey     : auth.twitter.id,
+        consumerSecret  : auth.twitter.key,
+        callbackURL     : auth.twitter.callback,
         passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, token, tokenSecret, profile, done) {
@@ -176,9 +176,9 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
     // GOOGLE ==================================================================
     // =========================================================================
     passport.use(new GoogleStrategy({
-        clientID        : configAuth.googleAuth.clientID,
-        clientSecret    : configAuth.googleAuth.clientSecret,
-        callbackURL     : configAuth.googleAuth.callbackURL,
+        clientID        : auth.google.id,
+        clientSecret    : auth.google.key,
+        callbackURL     : auth.google.callback,
         passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, token, refreshToken, profile, done) {

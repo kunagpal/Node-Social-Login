@@ -46,46 +46,12 @@ require('../config/passport'); // pass passport for configuration
                 failureRedirect : '/'
             }));
 
-
     // google ---------------------------------
         // send to google to do the authentication
         router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
         // the callback after google has authenticated the user
         router.get('/auth/google/callback', passport.authenticate('google', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
-
-// =============================================================================
-// AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
-// =============================================================================
-
-        // send to facebook to do the authentication
-        router.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
-
-        // handle the callback after facebook has authorized the user
-        router.get('/connect/facebook/callback', passport.authorize('facebook', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
-
-    // twitter --------------------------------
-        // send to twitter to do the authentication
-        router.get('/connect/twitter', passport.authorize('twitter', { scope : 'email' }));
-
-        // handle the callback after twitter has authorized the user
-        router.get('/connect/twitter/callback', passport.authorize('twitter', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
-
-    // google ---------------------------------
-        // send to google to do the authentication
-        router.get('/connect/google', passport.authorize('google', { scope : ['profile', 'email'] }));
-
-        // the callback after google has authorized the user
-        router.get('/connect/google/callback', passport.authorize('google', {
                 successRedirect : '/profile',
                 failureRedirect : '/'
             }));
