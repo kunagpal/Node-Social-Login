@@ -1,5 +1,6 @@
-var passport = require('passport');
+var db = require('./db.js');
 var auth = require('./auth'); // use this one for testing
+var passport = require('passport');
 var User = require('../app/models/user');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy  = require('passport-twitter').Strategy;
@@ -17,9 +18,7 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            done(err, user);
-        });
+        db.fetch(id, done);
     });
 
     // =========================================================================
@@ -35,7 +34,8 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
         // asynchronous
         process.nextTick(function() {
             // check if the user is already logged in
-            if (!req.user) {
+            if (!req.user)
+            {
                 User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
                     if (err)
                     {
@@ -43,25 +43,10 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
                     }
                     if (user)
                     {
-                        // if there is a user id already but no token (user was linked at one point and then removed)
-                        if (!user.facebook.token)
-                        {
-                            user.facebook.token = token;
-                            user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
-                            user.facebook.email = (profile.emails[0].value || '').toLowerCase();
-                            user.save(function(err) {
-                                if (err)
-                                {
-                                    return done(err);
-                                }
-                                return done(null, user);
-                            });
-                        }
-                        return done(null, user); // user found, return that user
+                          return done(null, user); // user found, return that user
                     }
-                    else
+                    else // if there is no user, create them
                     {
-                        // if there is no user, create them
                         var newUser            = new User();
                         newUser.facebook.id    = profile.id;
                         newUser.facebook.token = token;
@@ -119,21 +104,7 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
                     }
                     if (user)
                     {
-                        // if there is a user id already but no token (user was linked at one point and then removed)
-                        if (!user.twitter.token)
-                        {
-                            user.twitter.token       = token;
-                            user.twitter.username    = profile.username;
-                            user.twitter.displayName = profile.displayName;
-                            user.save(function(err) {
-                                if (err)
-                                {
-                                    return done(err);
-                                }
-                                return done(null, user);
-                            });
-                        }
-                        return done(null, user); // user found, return that user
+                          return done(null, user); // user found, return that user
                     }
                     else
                     {
@@ -194,21 +165,7 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
                     }
                     if (user)
                     {
-                        // if there is a user id already but no token (user was linked at one point and then removed)
-                        if (!user.google.token)
-                        {
-                            user.google.token = token;
-                            user.google.name  = profile.displayName;
-                            user.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
-                            user.save(function(err) {
-                                if (err)
-                                {
-                                    return done(err);
-                                }
-                                return done(null, user);
-                            });
-                        }
-                        return done(null, user);
+                           return done(null, user);
                     }
                     else
                     {

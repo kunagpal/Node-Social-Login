@@ -10,10 +10,15 @@ require('../config/passport'); // pass passport for configuration
     });
 
     // PROFILE SECTION =========================
-    router.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user : req.user
-        });
+    router.get('/profile', function(req, res) {
+        if(req.isAuthenticated())
+        {
+            res.render('profile.ejs', {user : req.user});
+        }
+        else
+        {
+            res.redirect('/');
+        }
     });
 
     // LOGOUT ==============================
@@ -55,14 +60,5 @@ require('../config/passport'); // pass passport for configuration
                 successRedirect : '/profile',
                 failureRedirect : '/'
             }));
-
-// route middleware to ensure user is logged in
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
-    {
-        return next();
-    }
-    res.redirect('/');
-}
 
 module.exports = router;
