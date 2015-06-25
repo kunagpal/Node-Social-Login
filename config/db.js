@@ -70,7 +70,7 @@ exports.save = function(doc, callback)
         }
         else
         {
-            var onSave = function(err, user)
+            var onSave = function(err)
             {
                 db.close();
                 if(err)
@@ -79,7 +79,7 @@ exports.save = function(doc, callback)
                 }
                 else
                 {
-                    callback(null, user);
+                    callback(null, doc);
                 }
             };
             db.collection('users').save(doc, onSave);

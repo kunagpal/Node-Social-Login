@@ -14,42 +14,35 @@
         <h1><span class="fa fa-anchor"></span> Profile Page</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
-        <% if (user.facebook) { %>
+        <% if (user.strategy == 'facebook') { %>
         <!-- FACEBOOK INFORMATION -->
         <div class="col-sm-6">
             <div class="well">
                 <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
                 <!-- check if the user has this token (is the user authenticated with this social account) -->
                     <p>
-                        <strong>id</strong>: <%= user.facebook.id %><br>
-                        <strong>token</strong>: <%= user.facebook.token %><br>
-                        <strong>email</strong>: <%= user.facebook.email %><br>
-                        <strong>name</strong>: <%= user.facebook.name %><br>
-                    </p>
-            </div>
+            <strong>Name</strong>: <%= user.name %><br>
+            <strong>Email</strong>: <%= user.email %><br>
+            </p>
         </div>
-    <% } else if (user.twitter) { %>
-        <!-- TWITTER INFORMATION -->
-        <div class="col-sm-6">
+</div>
+<% } else if (user.strategy == 'twitter') { %>
+<!-- TWITTER INFORMATION -->
+<div class="col-sm-6">
             <div class="well">
                 <h3 class="text-info"><span class="fa fa-twitter"></span> Twitter</h3>
                     <p>
-                        <strong>id</strong>: <%= user.twitter.id %><br>
-                        <strong>token</strong>: <%= user.twitter.token %><br>
-                        <strong>display name</strong>: <%= user.twitter.displayName %><br>
-                        <strong>username</strong>: <%= user.twitter.username %>
+                        <strong>Name</strong>: <%= user.name %>
                     </p>
             </div>
         </div>
-        <% } else if (user.google) { %> <!-- GOOGLE INFORMATION -->
+        <% } else if (user.strategy == 'google') { %> <!-- GOOGLE INFORMATION -->
         <div class="col-sm-6">
             <div class="well">
-                <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google+</h3>
+                <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google</h3>
                     <p>
-                        <strong>id</strong>: <%= user.google.id %><br>
-                        <strong>token</strong>: <%= user.google.token %><br>
-                        <strong>email</strong>: <%= user.google.email %><br>
-                        <strong>name</strong>: <%= user.google.name %>
+                        <strong>Name</strong>: <%= user.name %><br>
+                        <strong>Email</strong>: <%= user.email %><br>
                     </p>
             </div>
         </div>

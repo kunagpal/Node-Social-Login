@@ -1,5 +1,9 @@
 var passport = require('passport');
 var router = require('express').Router();
+var setCookie = function(req, res, next){
+    res.cookie('name', req.user, {maxAge: 86400000, signed: true});
+    next();
+};
 require('../config/passport'); // pass passport for configuration
 
 // normal routes ===============================================================
@@ -23,6 +27,7 @@ require('../config/passport'); // pass passport for configuration
 
     // LOGOUT ==============================
     router.get('/logout', function(req, res) {
+        res.clearCookie('name');
         req.logout();
         res.redirect('/');
     });
@@ -36,7 +41,7 @@ require('../config/passport'); // pass passport for configuration
         router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
         // handle the callback after facebook has authenticated the user
-        router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        router.get('/auth/facebook/callback', setCookie, passport.authenticate('facebook', {
                 successRedirect : '/profile',
                 failureRedirect : '/'
             }));
@@ -46,17 +51,21 @@ require('../config/passport'); // pass passport for configuration
         router.get('/auth/twitter', passport.authenticate('twitter', { scope : 'email' }));
 
         // handle the callback after twitter has authenticated the user
-        router.get('/auth/twitter/callback', passport.authenticate('twitter', {
+        router.get('/auth/twitter/callback', setCookie, passport.authenticate('twitter', {
                 successRedirect : '/profile',
                 failureRedirect : '/'
             }));
 
     // google ---------------------------------
         // send to google to do the authentication
-        router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+        router.get('/auth/google', passport.authenticate('google', { scope : [
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email'
+            ]
+        }));
 
         // the callback after google has authenticated the user
-        router.get('/auth/google/callback', passport.authenticate('google', {
+        router.get('/auth/google/callback', setCookie, passport.authenticate('google', {
                 successRedirect : '/profile',
                 failureRedirect : '/'
             }));
