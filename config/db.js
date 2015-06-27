@@ -32,6 +32,33 @@ exports.fetch = function(doc, callback)
     mongo.connect(uri, onConnect);
 };
 
+exports.count = function(callback) {
+    var onConnect = function(err, db)
+    {
+        if(err)
+        {
+            callback(err);
+        }
+        else
+        {
+            var onCount = function(err, count)
+            {
+                db.close();
+                if(err)
+                {
+                    callback(err);
+                }
+                else
+                {
+                    callback(null, count);
+                }
+            };
+            db.collection('users').count(onCount);
+        }
+    };
+    mongo.connect(uri, onConnect);
+};
+
 exports.find = function(doc, callback)
 {
     var onConnect = function(err, db)

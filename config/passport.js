@@ -35,19 +35,30 @@ var google = require('passport-google-oauth').OAuth2Strategy;
                     }
                     else // if there is no user, create them
                     {
-                        var newUser = {};
-                        newUser.token = token;
-                        newUser.profile = profile.id;
-                        newUser.strategy = 'facebook';
-                        newUser.email = (profile.emails[0].value || '').toLowerCase();
-                        newUser.name = profile.name.givenName + ' ' + profile.name.familyName;
-                        db.save(newUser, function(err, newUser) {
-                            if (err)
+                        var onGetCount = function(err, number){
+                            if(err)
                             {
-                                return done(err);
+                                console.log(err.message);
                             }
-                            return done(null, newUser);
-                        });
+                            else
+                            {
+                                var newUser = {};
+                                newUser.num = parseInt(number) + 1;
+                                newUser.token = token;
+                                newUser.profile = profile.id;
+                                newUser.strategy = 'facebook';
+                                newUser.email = (profile.emails[0].value || '').toLowerCase();
+                                newUser.name = profile.name.givenName + ' ' + profile.name.familyName;
+                                db.save(newUser, function(err, newUser) {
+                                    if (err)
+                                    {
+                                        return done(err);
+                                    }
+                                    return done(null, newUser);
+                                });
+                            }
+                        };
+                        db.count(onGetCount);
                     }
                 });
             }
@@ -86,23 +97,33 @@ var google = require('passport-google-oauth').OAuth2Strategy;
                     }
                     if (user)
                     {
-                        console.log(profile._json.entities);
                         return done(null, user); // user found, return that user
                     }
                     else
                     {
-                        var newUser = {};
-                        newUser.token = token;
-                        newUser.strategy = 'twitter';
-                        newUser.profile = profile.id;
-                        newUser.name = profile.displayName;
-                        db.save(newUser, function(err) {
-                            if (err)
+                        var onGetCount = function(err, number){
+                            if(err)
                             {
-                                return done(err);
+                                console.log(err.message);
                             }
-                            return done(null, newUser);
-                        });
+                            else
+                            {
+                                var newUser = {};
+                                newUser.num = parseInt(number) + 1;
+                                newUser.token = token;
+                                newUser.strategy = 'twitter';
+                                newUser.profile = profile.id;
+                                newUser.name = profile.displayName;
+                                db.save(newUser, function(err) {
+                                    if (err)
+                                    {
+                                        return done(err);
+                                    }
+                                    return done(null, newUser);
+                                });
+                            }
+                        };
+                        db.count(onGetCount);
                     }
                 });
             }
@@ -144,19 +165,30 @@ var google = require('passport-google-oauth').OAuth2Strategy;
                     }
                     else
                     {
-                        var newUser = {};
-                        newUser.token = token;
-                        newUser.strategy = 'google';
-                        newUser.profile = profile.id;
-                        newUser.name = profile.displayName;
-                        newUser.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
-                        db.save(newUser, function(err) {
-                            if (err)
+                        var onGetCount = function(err, number){
+                            if(err)
                             {
-                                return done(err);
+                                console.log(err.message);
                             }
-                            return done(null, newUser);
-                        });
+                            else
+                            {
+                                var newUser = {};
+                                newUser.num = parseInt(number) + 1;
+                                newUser.token = token;
+                                newUser.strategy = 'google';
+                                newUser.profile = profile.id;
+                                newUser.name = profile.displayName;
+                                newUser.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
+                                db.save(newUser, function(err) {
+                                    if (err)
+                                    {
+                                        return done(err);
+                                    }
+                                    return done(null, newUser);
+                                });
+                            }
+                        };
+                        db.count(onGetCount);
                     }
                 });
             }
