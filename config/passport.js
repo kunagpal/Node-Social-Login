@@ -22,9 +22,10 @@ var google = require('passport-google-oauth').OAuth2Strategy;
     },
     function(req, token, refreshToken, profile, done) {
         process.nextTick(function() {
-            if (!req.user)
+            if (!req.signedCookies.name)
             {
-                db.find({ 'profile' : profile.id }, function(err, user) {
+                console.log(req.cookies.temp);
+                db.find({ '_id' : req.cookies.temp }, function(err, user) {
                     if (err)
                     {
                         return done(err);
@@ -43,6 +44,7 @@ var google = require('passport-google-oauth').OAuth2Strategy;
                             else
                             {
                                 var newUser = {};
+                                newUser._id = req.cookies.temp;
                                 newUser.num = parseInt(number) + 1;
                                 newUser.token = token;
                                 newUser.profile = profile.id;
@@ -65,6 +67,7 @@ var google = require('passport-google-oauth').OAuth2Strategy;
             else
             {
                 var user = req.user; // pull the user out of the session
+                user._id = req.cookies.temp;
                 user.token = token;
                 user.profile = profile.id;
                 user.email = (profile.emails[0].value || '').toLowerCase();
@@ -88,9 +91,9 @@ var google = require('passport-google-oauth').OAuth2Strategy;
     },
     function(req, token, tokenSecret, profile, done) {
         process.nextTick(function() {
-            if (!req.user)
+            if (!req.signedCookies.name)
             {
-                db.find({ 'profile' : profile.id }, function(err, user) {
+                db.find({ '_id' : req.cookies.temp}, function(err, user) {
                     if (err)
                     {
                         return done(err);
@@ -109,6 +112,7 @@ var google = require('passport-google-oauth').OAuth2Strategy;
                             else
                             {
                                 var newUser = {};
+                                newUser._id = req.cookies.temp;
                                 newUser.num = parseInt(number) + 1;
                                 newUser.token = token;
                                 newUser.strategy = 'twitter';
@@ -130,6 +134,7 @@ var google = require('passport-google-oauth').OAuth2Strategy;
             else
             {
                 var user = req.user; // pull the user out of the session
+                user._id = req.cookies.temp;
                 user.token = token;
                 user.profile = profile.id;
                 user.name = profile.displayName;
@@ -152,9 +157,9 @@ var google = require('passport-google-oauth').OAuth2Strategy;
     },
     function(req, token, refreshToken, profile, done) {
         process.nextTick(function() {
-            if (!req.user)
+            if (!req.signedCookies.name)
             {
-                db.find({ 'profile' : profile.id }, function(err, user) {
+                db.find({ '_id' : req.cookies.temp}, function(err, user) {
                     if (err)
                     {
                         return done(err);
@@ -173,6 +178,7 @@ var google = require('passport-google-oauth').OAuth2Strategy;
                             else
                             {
                                 var newUser = {};
+                                newUser._id = req.cookies.temp;
                                 newUser.num = parseInt(number) + 1;
                                 newUser.token = token;
                                 newUser.strategy = 'google';
@@ -195,6 +201,7 @@ var google = require('passport-google-oauth').OAuth2Strategy;
             else
             {
                 var user = req.user; // pull the user out of the session
+                user._id = req.cookies.temp;
                 user.token = token;
                 user.profile = profile.id;
                 user.name = profile.displayName;

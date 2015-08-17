@@ -14,15 +14,14 @@
         <h1><span class="fa fa-anchor"></span> Profile Page</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
-        <% if (user.strategy == 'facebook') { %>
+        <% if (user.strategy == 'facebook' || 1) { %>
         <!-- FACEBOOK INFORMATION -->
         <div class="col-sm-6">
             <div class="well">
                 <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
                 <!-- check if the user has this token (is the user authenticated with this social account) -->
                     <p>
-            <strong>Name</strong>: <%= user.name %><br>
-            <strong>Email</strong>: <%= user.email %><br>
+            <strong>Name</strong>: <%= user %><br>
             </p>
         </div>
 </div>

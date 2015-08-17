@@ -26,7 +26,8 @@ exports.fetch = function(doc, callback)
                     callback(null, user);
                 }
             };
-            db.collection('users').findOne({_id : require('mongodb').ObjectID(doc)}, onFind);
+            console.log(doc);
+            db.collection('users').findOne({_id : doc}, onFind);
         }
     };
     mongo.connect(uri, onConnect);
@@ -110,6 +111,33 @@ exports.save = function(doc, callback)
                 }
             };
             db.collection('users').save(doc, onSave);
+        }
+    };
+    mongo.connect(uri, onConnect);
+};
+
+exports.findOrInsert = function(doc, user, callback)
+{
+    var onConnect = function(err, db)
+    {
+        if(err)
+        {
+            callback(err);
+        }
+        else
+        {
+            var onQuery = function(err, rec)
+            {
+                if(err)
+                {
+                    callback(err);
+                }
+                else
+                {
+                    callback(null, rec.value || user);
+                }
+            };
+            db.collection('users').findOneAndUpdate(doc, {$setOnInsert : user}, {upsert : true, new : true, returnOriginal : true}, onQuery);
         }
     };
     mongo.connect(uri, onConnect);
